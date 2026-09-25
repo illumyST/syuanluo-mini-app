@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#3d3021" />
+    <meta name="description" content="玹璦的太極能量空間｜服務預約" />
+    <title>玹璦的太極能量空間｜服務預約</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;500;600;700;900&family=Noto+Sans+TC:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="./styles.css" />
+    <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
+    <script src="./app.js" defer></script>
+  </head>
+  <body>
+    <main class="page-shell">
+      <div class="ink-cloud cloud-left" aria-hidden="true"></div>
+      <div class="ink-cloud cloud-right" aria-hidden="true"></div>
+      <header class="hero">
+        <p class="eyebrow">SYUANLUO · TAIJI ENERGY SPACE</p>
+        <div class="seal" aria-hidden="true">太極</div>
+        <h1>玹璦的太極能量空間</h1>
+        <p class="hero-copy">順勢而行，安住當下。<br />在合適的時刻，為自己留一段靜心的空間。</p>
+        <div class="yin-yang" aria-hidden="true"><span></span><i></i></div>
+      </header>
+
+      <section class="booking-card" aria-labelledby="booking-title">
+        <div class="card-heading">
+          <p class="step-mark">預約服務</p>
+          <h2 id="booking-title">選一段為自己而留的時間</h2>
+          <p>送出後將由我們確認預約細節。</p>
+        </div>
+
+        <form id="booking-form" novalidate>
+          <fieldset class="service-fieldset">
+            <legend>1．選擇服務 <span aria-hidden="true">*</span></legend>
+            <div class="service-options">
+              <input class="visually-hidden" type="radio" id="service-transfer" name="service" value="transfer" required />
+              <label class="service-option" for="service-transfer">
+                <span class="element-mark element-water">水</span>
+                <span class="service-info"><strong>超渡</strong><small>每年 1、4、7、10 月第一個週日下午</small></span>
+                <span class="service-price">不收費</span>
+              </label>
+              <input class="visually-hidden" type="radio" id="service-numerology" name="service" value="numerology" required />
+              <label class="service-option" for="service-numerology">
+                <span class="element-mark element-gold">金</span>
+                <span class="service-info"><strong>生命靈數分析</strong><small>平日晚上、假日白天皆可預約</small></span>
+                <span class="service-price">NT$ 3,000</span>
+              </label>
+            </div>
+            <p class="field-error" id="service-error" aria-live="polite"></p>
+          </fieldset>
+
+          <div class="form-grid">
+            <div class="form-group">
+              <label for="booking-date">2．選擇日期 <span aria-hidden="true">*</span></label>
+              <input type="date" id="booking-date" name="date" required aria-describedby="date-hint date-error" />
+              <p class="hint" id="date-hint">請先選擇服務，再選擇日期。</p>
+              <p class="field-error" id="date-error" aria-live="polite"></p>
+            </div>
+            <div class="form-group">
+              <label for="booking-time">3．可預約時段 <span aria-hidden="true">*</span></label>
+              <select id="booking-time" name="time" required disabled aria-describedby="time-hint time-error">
+                <option value="">請先選擇服務與日期</option>
+              </select>
+              <p class="hint" id="time-hint">時段將在收到預約申請後再次確認。</p>
+              <p class="field-error" id="time-error" aria-live="polite"></p>
+            </div>
+          </div>
+
+          <fieldset class="contact-fieldset">
+            <legend>4．留下聯絡資料</legend>
+            <div class="form-grid">
+              <div class="form-group">
+                <label for="customer-name">姓名 <span aria-hidden="true">*</span></label>
+                <input id="customer-name" name="name" type="text" required maxlength="60" autocomplete="name" enterkeyhint="next" aria-describedby="name-error" />
+                <p class="field-error" id="name-error" aria-live="polite"></p>
+              </div>
+              <div class="form-group">
+                <label for="customer-phone">手機號碼 <span aria-hidden="true">*</span></label>
+                <input id="customer-phone" name="phone" type="tel" required inputmode="tel" maxlength="30" autocomplete="tel" enterkeyhint="next" aria-describedby="phone-error" />
+                <p class="field-error" id="phone-error" aria-live="polite"></p>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="customer-note">想告訴我們的事 <span class="optional">選填</span></label>
+              <textarea id="customer-note" name="note" rows="4" maxlength="500" placeholder="例如：希望聯繫的時間、想了解的方向"></textarea>
+            </div>
+          </fieldset>
+
+          <label class="consent">
+            <input type="checkbox" id="privacy-consent" name="privacy" required aria-describedby="privacy-error" />
+            <span>我已閱讀並同意<a href="./privacy.html" target="_blank">隱私權政策</a>與<a href="./terms.html" target="_blank">服務條款</a>。<b aria-hidden="true">*</b></span>
+          </label>
+          <p class="field-error" id="privacy-error" aria-live="polite"></p>
+
+          <button class="submit-button" type="submit">送出預約申請 <span aria-hidden="true">→</span></button>
+          <p class="form-status" id="form-status" role="status" aria-live="polite"></p>
+        </form>
+      </section>
+
+      <footer>
+        <p>太極之眼 · 順勢而行</p>
+        <p class="footer-links"><a href="./terms.html">服務條款</a><span>·</span><a href="./privacy.html">隱私權政策</a></p>
+      </footer>
+    </main>
+  </body>
+</html>
