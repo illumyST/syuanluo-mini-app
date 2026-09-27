@@ -1,0 +1,1 @@
+{"name":"syuanluo-booking-worker","private":true,"type":"module","scripts":{"dev":"wrangler dev","deploy":"wrangler deploy","db:create":"wrangler d1 create syuanluo-booking","db:migrate:remote":"wrangler d1 execute syuanluo-booking --remote --file=./schema.sql"},"devDependencies":{"wrangler":"^4.0.0"}}

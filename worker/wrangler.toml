@@ -1,0 +1,11 @@
+name = "syuanluo-booking-api"
+main = "src/index.js"
+compatibility_date = "2026-09-27"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "syuanluo-booking"
+database_id = "5e70ec3e-a388-4b3d-97a1-16fbb1fa30d2"
+
+[vars]
+ALLOWED_ORIGINS = "https://illumyst.github.io"

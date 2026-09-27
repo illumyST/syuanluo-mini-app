@@ -11,7 +11,19 @@
 
 ## 重要限制
 
-此版為靜態「預約申請」原型：送出資料只會存在使用者當前瀏覽器的 localStorage，並不會通知服務方、鎖定時段或處理付款。正式上線前，必須接上受保護的後端資料庫、LINE 通知與金流。
+表單會送至 Cloudflare Worker，寫入 D1 資料庫；管理員在 `admin.html` 確認預約後，Worker 透過 LINE 官方帳號通知填表人。
+
+## Cloudflare 設定
+
+在 `worker/` 執行：
+
+1. `npm install`、`npx wrangler login`
+2. `npm run db:create`，把輸出的 `database_id` 填入 `worker/wrangler.toml`
+3. `npm run db:migrate:remote`
+4. 依序設定 secrets：`npx wrangler secret put LINE_MINI_APP_CHANNEL_ID`、`npx wrangler secret put LINE_MESSAGING_CHANNEL_ACCESS_TOKEN`、`npx wrangler secret put ADMIN_LINE_USER_ID`
+5. `npm run deploy`，把輸出的 Worker URL 填入根目錄 `config.js`
+
+LINE Messaging API Channel 與 MINI App 必須同一 Provider；管理員也必須先加入官方帳號好友，才能收到新申請通知。
 
 ## 部署
 

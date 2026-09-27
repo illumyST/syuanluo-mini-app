@@ -1,5 +1,6 @@
 // 將此值換成正式 Published LIFF ID 後，部署版本即可在正式 MINI App 中初始化。
 const LIFF_ID = "2011747239-32DwtMu3";
+const API_BASE_URL = window.SYUANLUO_API_BASE_URL || "";
 
 const form = document.querySelector("#booking-form");
 const serviceInputs = [...document.querySelectorAll('input[name="service"]')];
@@ -63,11 +64,13 @@ dateInput.addEventListener("change", updateAvailability);
   input.addEventListener("change", () => { if (input.validity.valid) clearError(input); });
 });
 
+let lineAccessToken = "";
 async function initLiff() {
   if (!window.liff) return;
   try {
     await liff.init({ liffId: LIFF_ID });
     if (liff.isLoggedIn()) {
+      lineAccessToken = liff.getAccessToken() || "";
       const profile = await liff.getProfile();
       const name = document.querySelector("#customer-name");
       if (!name.value) name.value = profile.displayName;
@@ -75,7 +78,7 @@ async function initLiff() {
   } catch (error) { console.info("LIFF will initialize after the Endpoint URL is configured.", error); }
 }
 
-form.addEventListener("submit", (event) => {
+form.addEventListener("submit", async (event) => {
   event.preventDefault(); status.textContent = "";
   const service = selectedService();
   if (!service) { document.querySelector("#service-error").textContent = "請選擇一項服務。"; serviceInputs[0].focus(); return; }
@@ -83,13 +86,12 @@ form.addEventListener("submit", (event) => {
   let invalid = false;
   controls.forEach((input) => { if (!input.validity.valid) { setError(input, "請完成此欄位。"); invalid = true; } });
   if (invalid) { form.querySelector('[aria-invalid="true"]')?.focus(); return; }
+  if (!API_BASE_URL) { status.textContent = "預約系統正在設定中，請稍後再試。"; return; }
+  if (!lineAccessToken) { status.textContent = "請從 LINE MINI App 重新開啟後再送出。"; return; }
   const data = Object.fromEntries(new FormData(form));
-  const request = { ...data, serviceName:serviceDetails[service].name, duration:serviceDetails[service].duration, price:serviceDetails[service].price, submittedAt:new Date().toISOString() };
-  // 靜態版僅存於本裝置，正式版改為 POST 至受保護的後端 API。
-  localStorage.setItem("syuanluo-latest-booking-request", JSON.stringify(request));
   submitButton.disabled = true;
-  status.textContent = `已收到 ${request.serviceName} 的預約申請；我們將與你確認 ${request.date} 的時段。`;
-  submitButton.textContent = "預約申請已送出";
+  submitButton.textContent = "送出中…";
+  try { const response = await fetch(`${API_BASE_URL}/bookings`, { method:"POST", headers:{"Content-Type":"application/json",Authorization:`Bearer ${lineAccessToken}`}, body:JSON.stringify(data) }); const body = await response.json().catch(() => ({})); if (!response.ok) throw new Error(body.error || "目前無法送出預約，請稍後再試。"); status.textContent = `已收到 ${serviceDetails[service].name} 的預約申請；我們將透過 LINE 與你確認。`; submitButton.textContent = "預約申請已送出"; } catch (error) { status.textContent = error.message || "目前無法送出預約，請稍後再試。"; submitButton.disabled = false; submitButton.textContent = "送出預約申請 →"; }
 });
 
 initLiff();
