@@ -1,1 +1,125 @@
-:root{--ink:#30271e;--paper:#f6f0e4;--jade:#54715e;--border:#cbbda8}*{box-sizing:border-box}body{margin:0;color:var(--ink);font:16px/1.55 system-ui,sans-serif;background:linear-gradient(135deg,#eae0cf,#f8f4ea)}main{max-width:52rem;margin:auto;padding:2rem 1rem 4rem}header{text-align:center}h1,h2{font-family:serif}.filters{display:grid;gap:.75rem;margin:1.5rem 0;padding:1rem;border:1px solid var(--border);background:#fffdf8}label{display:grid;gap:.25rem;font-weight:700}input,select,textarea,button{font:inherit}input,select,textarea,button{min-height:48px;padding:.6rem .7rem;border:1px solid #bdb09d;background:#fff}button{border:0;color:#fff;background:#4c624f;font-weight:700;cursor:pointer}button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:3px solid #617a6b;outline-offset:2px}.booking{margin:1rem 0;padding:1rem;border:1px solid var(--border);background:#fffdf8}.booking h3{margin:0 0 .5rem}.booking p{margin:.35rem 0}.note{padding:.6rem;background:#f2eadc;white-space:pre-wrap}.reply{display:grid;gap:.5rem;margin-top:.75rem}.actions{display:grid;gap:.5rem}.actions button[data-status="needs_information"]{background:#85703c}.actions button[data-status="rejected"]{background:#8b4439}@media(min-width:640px){main{padding:3rem 1.5rem}.filters{grid-template-columns:1fr 1fr auto;align-items:end}.actions{grid-template-columns:repeat(3,1fr)}}
+/* 管理後台色票；共用 CSS 變數方便統一邊框與文字顏色。 */
+:root {
+  --ink: #30271e;
+  --paper: #f6f0e4;
+  --jade: #54715e;
+  --border: #cbbda8;
+}
+* {
+  box-sizing: border-box;
+}
+/* 後台全頁字型與背景；main 限制內容寬度並置中。 */
+body {
+  margin: 0;
+  color: var(--ink);
+  font:
+    16px/1.55 system-ui,
+    sans-serif;
+  background: linear-gradient(135deg, #eae0cf, #f8f4ea);
+}
+main {
+  max-width: 52rem;
+  margin: auto;
+  padding: 2rem 1rem 4rem;
+}
+header {
+  text-align: center;
+}
+h1,
+h2 {
+  font-family: serif;
+}
+/* 手機上篩選條件依序向下排列，寬螢幕再改成同一列。 */
+.filters {
+  display: grid;
+  gap: 0.75rem;
+  margin: 1.5rem 0;
+  padding: 1rem;
+  border: 1px solid var(--border);
+  background: #fffdf8;
+}
+label {
+  display: grid;
+  gap: 0.25rem;
+  font-weight: 700;
+}
+/* 表單元件沿用頁面字型，並統一操作高度與邊框。 */
+input,
+select,
+textarea,
+button {
+  font: inherit;
+}
+input,
+select,
+textarea,
+button {
+  min-height: 48px;
+  padding: 0.6rem 0.7rem;
+  border: 1px solid #bdb09d;
+  background: #fff;
+}
+button {
+  border: 0;
+  color: #fff;
+  background: #4c624f;
+  font-weight: 700;
+  cursor: pointer;
+}
+/* 鍵盤操作時顯示焦點框，方便辨識目前所在欄位。 */
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  outline: 3px solid #617a6b;
+  outline-offset: 2px;
+}
+/* admin.js 建立的每張預約卡片，包含資料與回覆區。 */
+.booking {
+  margin: 1rem 0;
+  padding: 1rem;
+  border: 1px solid var(--border);
+  background: #fffdf8;
+}
+.booking h3 {
+  margin: 0 0 0.5rem;
+}
+.booking p {
+  margin: 0.35rem 0;
+}
+/* 備註樣式保留換行；目前動態卡片未使用此 class。 */
+.note {
+  padding: 0.6rem;
+  background: #f2eadc;
+  white-space: pre-wrap;
+}
+/* 回覆表單與按鈕區採 Grid 排列，手機上按鈕由上到下堆疊。 */
+.reply {
+  display: grid;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+}
+.actions {
+  display: grid;
+  gap: 0.5rem;
+}
+/* 以 data-status 區分補資料與婉拒按鈕顏色，與 admin.js 送出的狀態一致。 */
+.actions button[data-status="needs_information"] {
+  background: #85703c;
+}
+.actions button[data-status="rejected"] {
+  background: #8b4439;
+}
+/* 寬螢幕把篩選區排成三欄，三種審核按鈕也並排。 */
+@media (min-width: 640px) {
+  main {
+    padding: 3rem 1.5rem;
+  }
+  .filters {
+    grid-template-columns: 1fr 1fr auto;
+    align-items: end;
+  }
+  .actions {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}

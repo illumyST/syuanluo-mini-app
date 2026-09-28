@@ -1,28 +1,507 @@
-:root { --ink:#30271e; --brown:#58402b; --gold:#ad7e38; --paper:#f6f0e4; --paper-deep:#e9ddc9; --jade:#54715e; --error:#9b3329; }
-* { box-sizing:border-box; }
-html { background:#e9e0d2; }
-body { min-width:320px; margin:0; color:var(--ink); font-family:"Noto Sans TC",sans-serif; font-size:16px; line-height:1.55; background:radial-gradient(circle at 50% 14%, rgba(255,255,255,.92), transparent 33rem), linear-gradient(135deg,#eae0cf,#f8f4ea 45%,#e5d8c2); }
-.page-shell { position:relative; isolation:isolate; overflow:hidden; min-height:100vh; padding:2.35rem 1rem 2rem; }
-.page-shell::before { content:""; position:absolute; z-index:-1; inset:0; opacity:.38; pointer-events:none; background-image:radial-gradient(rgba(83,59,34,.18) .6px,transparent .8px); background-size:5px 5px; mix-blend-mode:multiply; }
-.ink-cloud { position:absolute; z-index:-1; width:34rem; aspect-ratio:1; border:1px solid rgba(81,67,48,.12); border-radius:50%; filter:blur(.2px); opacity:.7; }
-.cloud-left { top:14rem; left:-25rem; box-shadow:3rem 0 0 3rem rgba(84,102,91,.06), 9rem -7rem 0 1rem rgba(73,71,55,.07); }
-.cloud-right { top:4rem; right:-26rem; box-shadow:-4rem 3rem 0 3rem rgba(116,80,45,.06), -10rem -5rem 0 1rem rgba(102,108,92,.05); }
-.hero { position:relative; max-width:44rem; margin:0 auto 1.6rem; text-align:center; }
-.eyebrow { margin:0 0 .5rem; color:#715b40; font:600 .7rem/1.4 "Noto Serif TC",serif; letter-spacing:.18em; }
-.seal { display:inline-grid; place-items:center; width:2.8rem; height:2.8rem; margin-bottom:.25rem; color:#fff5e5; font:600 .88rem/1 "Noto Serif TC",serif; letter-spacing:.05em; background:#963b2d; box-shadow:inset 0 0 0 2px rgba(255,235,202,.5); transform:rotate(-3deg); }
-h1,h2,legend { font-family:"Noto Serif TC",serif; }
-h1 { margin:.15rem 0 .5rem; font-size:clamp(1.45rem,7.6vw,2rem); letter-spacing:.045em; line-height:1.3; white-space:nowrap; text-wrap:nowrap; }
-.hero-copy { margin:0; color:#665441; font-family:"Noto Serif TC",serif; font-size:.98rem; letter-spacing:.1em; }
-.yin-yang { position:relative; width:3.1rem; height:3.1rem; margin:1rem auto 0; border-radius:50%; background:linear-gradient(90deg,#2e302a 50%,#ede5d6 50%); border:1px solid rgba(68,54,37,.45); transform:rotate(20deg); }
-.yin-yang::before,.yin-yang::after { content:""; position:absolute; left:25%; width:50%; height:50%; border-radius:50%; }
-.yin-yang::before { top:0; background:#ede5d6; }.yin-yang::after { bottom:0; background:#2e302a; }
-.yin-yang span,.yin-yang i { position:absolute; z-index:2; top:20%; width:.32rem; height:.32rem; border-radius:50%; }.yin-yang span { left:42%; background:#2e302a; }.yin-yang i { right:42%; top:70%; background:#ede5d6; }
-.booking-card { max-width:44rem; margin:auto; padding:1.3rem; border:1px solid rgba(104,79,46,.35); background:rgba(255,252,245,.78); box-shadow:0 1.1rem 3.6rem rgba(65,45,25,.13), inset 0 0 0 5px rgba(241,232,216,.66); backdrop-filter:blur(5px); }
-.card-heading { margin-bottom:1.5rem; text-align:center; }.step-mark { margin:0; color:#956f31; font-size:.82rem; font-weight:700; letter-spacing:.17em; }.card-heading h2 { margin:.3rem 0 .2rem; font-size:clamp(1.12rem,5.1vw,1.35rem); white-space:nowrap; text-wrap:nowrap; }.card-heading p:last-child { margin:0; color:#766955; font-size:.82rem; }
-fieldset { min-width:0; margin:0 0 1.6rem; padding:0; border:0; } legend { width:100%; margin-bottom:.8rem; font-size:1.08rem; font-weight:700; } legend span,.consent b { color:var(--error); }.service-options { display:grid; gap:.7rem; }
-.service-option { display:grid; grid-template-columns:2.4rem minmax(0,1fr) max-content; column-gap:.65rem; align-items:center; min-height:5.25rem; padding:.7rem .75rem; border:1px solid #cbbda8; cursor:pointer; transition:transform .16s, border-color .16s, background .16s; }.service-option:hover { transform:translateY(-1px); border-color:#8a6b3b; }.visually-hidden { position:absolute; width:1px; height:1px; clip-path:inset(50%); overflow:hidden; white-space:nowrap; }.visually-hidden:checked + .service-option { border-color:#8d692c; background:linear-gradient(90deg,rgba(190,151,79,.16),rgba(255,253,247,.2)); box-shadow:inset 3px 0 #9d7433; }.visually-hidden:focus-visible + .service-option { outline:3px solid #3d6255; outline-offset:2px; }
-.element-mark { display:grid; grid-row:span 2; place-items:center; width:2.4rem; height:2.4rem; border-radius:50%; color:#fff; font-family:"Noto Serif TC",serif; font-weight:700; }.element-water { background:#4f7280; }.element-gold { background:#a87a34; }.service-info { display:contents; }.service-info strong { grid-column:2; font-family:"Noto Serif TC",serif; font-size:1.08rem; line-height:1.25; white-space:nowrap; text-wrap:nowrap; }.service-info small { grid-column:1 / -1; color:#746854; font-size:.71rem; line-height:1.35; white-space:nowrap; text-wrap:nowrap; }.service-price { grid-column:3; color:#68491d; font-family:"Noto Serif TC",serif; font-size:.88rem; font-weight:700; white-space:nowrap; text-wrap:nowrap; }
-.form-grid { display:grid; grid-template-columns:1fr; gap:0; }.form-group { margin-bottom:1rem; }.form-group label { display:block; margin-bottom:.35rem; font-weight:700; }.optional { color:#80745e; font-size:.8rem; font-weight:400; } input,select,textarea { width:100%; min-height:48px; padding:.7rem .75rem; border:1px solid #bdb09d; border-radius:0; color:var(--ink); font:inherit; background:rgba(255,253,248,.94); } textarea { min-height:7rem; resize:vertical; } input:focus-visible,select:focus-visible,textarea:focus-visible,.consent:has(input:focus-visible) { outline:3px solid #617a6b; outline-offset:2px; } input:user-invalid,select:user-invalid { border-color:var(--error); }.hint,.field-error { margin:.35rem 0 0; font-size:.78rem; }.hint { color:#756a58; white-space:nowrap; text-wrap:nowrap; }.field-error { min-height:1.15em; color:var(--error); }.consent { display:flex; gap:.55rem; align-items:flex-start; margin:.2rem 0 .3rem; color:#5f5343; font-size:.82rem; }.consent input { flex:0 0 auto; width:1.15rem; min-height:1.15rem; margin:.18rem 0 0; accent-color:#56705e; }.consent a,.footer-links a { color:#624720; text-underline-offset:3px; }.submit-button { width:100%; min-height:52px; margin-top:.7rem; border:0; color:#fffaf0; font:700 1rem "Noto Serif TC",serif; letter-spacing:.1em; cursor:pointer; background:linear-gradient(100deg,#3e5145,#736038 52%,#8a542a); box-shadow:0 .45rem .9rem rgba(75,54,28,.2); transition:filter .2s,transform .2s; }.submit-button:hover { filter:brightness(1.08); transform:translateY(-1px); }.submit-button:focus-visible { outline:3px solid #203c2d; outline-offset:3px; }.submit-button:disabled { cursor:wait; opacity:.7; }.form-status { min-height:1.3rem; margin:.9rem 0 0; text-align:center; color:#365c4b; font-weight:700; }
-footer { margin-top:2rem; text-align:center; color:#725f47; font-family:"Noto Serif TC",serif; font-size:.82rem; letter-spacing:.08em; }.footer-links { display:flex; justify-content:center; gap:.55rem; margin:.3rem 0 0; font-family:"Noto Sans TC",sans-serif; font-size:.75rem; letter-spacing:0; }
-@media (min-width:640px) { .page-shell { padding:3.5rem 1.25rem 2.5rem; }.hero { margin-bottom:2.2rem; } h1 { font-size:clamp(2rem,6vw,3.2rem); letter-spacing:.08em; }.booking-card { padding:clamp(1.4rem,4vw,2.5rem); }.card-heading h2 { font-size:clamp(1.35rem,4vw,1.75rem); }.form-grid { grid-template-columns:repeat(2,minmax(0,1fr)); gap:1rem; }.service-option { padding:.7rem .85rem; }.service-info small { grid-column:2; }.element-mark { grid-row:auto; }.service-info { display:grid; gap:.05rem; }.service-info strong,.service-info small { grid-column:auto; }.service-info small { white-space:normal; text-wrap:wrap; }.service-price { grid-column:auto; font-size:1rem; } }
-@media (prefers-reduced-motion:reduce) { *,*::before,*::after { scroll-behavior:auto !important; transition-duration:.01ms !important; } }
+/* 預約頁樣式。共用色票集中於 CSS 變數，後面的 var(...) 會引用這些設定。 */
+:root {
+  --ink: #30271e;
+  --brown: #58402b;
+  --gold: #ad7e38;
+  --paper: #f6f0e4;
+  --paper-deep: #e9ddc9;
+  --jade: #54715e;
+  --error: #9b3329;
+}
+/* 尺寸計算包含 padding 與 border，讓表單欄位不因內距而超出容器。 */
+* {
+  box-sizing: border-box;
+}
+html {
+  background: #e9e0d2;
+}
+/* 全頁字型、文字色與紙張漸層背景；最小寬度設為 320px。 */
+body {
+  min-width: 320px;
+  margin: 0;
+  color: var(--ink);
+  font-family: "Noto Sans TC", sans-serif;
+  font-size: 16px;
+  line-height: 1.55;
+  background:
+    radial-gradient(circle at 50% 14%, rgba(255, 255, 255, 0.92), transparent 33rem),
+    linear-gradient(135deg, #eae0cf, #f8f4ea 45%, #e5d8c2);
+}
+/* 建立獨立堆疊範圍，讓負 z-index 裝飾留在頁面背景；隱藏超出的裝飾。 */
+.page-shell {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  min-height: 100vh;
+  padding: 2.35rem 1rem 2rem;
+}
+/* 以偽元素畫出紙張顆粒；pointer-events:none 讓它不攔截使用者操作。 */
+.page-shell::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  opacity: 0.38;
+  pointer-events: none;
+  background-image: radial-gradient(rgba(83, 59, 34, 0.18) 0.6px, transparent 0.8px);
+  background-size: 5px 5px;
+  mix-blend-mode: multiply;
+}
+/* 左右圓形雲紋由定位、陰影與透明度構成，不需要額外圖片。 */
+.ink-cloud {
+  position: absolute;
+  z-index: -1;
+  width: 34rem;
+  aspect-ratio: 1;
+  border: 1px solid rgba(81, 67, 48, 0.12);
+  border-radius: 50%;
+  filter: blur(0.2px);
+  opacity: 0.7;
+}
+.cloud-left {
+  top: 14rem;
+  left: -25rem;
+  box-shadow:
+    3rem 0 0 3rem rgba(84, 102, 91, 0.06),
+    9rem -7rem 0 1rem rgba(73, 71, 55, 0.07);
+}
+.cloud-right {
+  top: 4rem;
+  right: -26rem;
+  box-shadow:
+    -4rem 3rem 0 3rem rgba(116, 80, 45, 0.06),
+    -10rem -5rem 0 1rem rgba(102, 108, 92, 0.05);
+}
+/* 頁首標題置中並限制最大寬度；印章與太極圖案是視覺裝飾。 */
+.hero {
+  position: relative;
+  max-width: 44rem;
+  margin: 0 auto 1.6rem;
+  text-align: center;
+}
+.eyebrow {
+  margin: 0 0 0.5rem;
+  color: #715b40;
+  font:
+    600 0.7rem/1.4 "Noto Serif TC",
+    serif;
+  letter-spacing: 0.18em;
+}
+.seal {
+  display: inline-grid;
+  place-items: center;
+  width: 2.8rem;
+  height: 2.8rem;
+  margin-bottom: 0.25rem;
+  color: #fff5e5;
+  font:
+    600 0.88rem/1 "Noto Serif TC",
+    serif;
+  letter-spacing: 0.05em;
+  background: #963b2d;
+  box-shadow: inset 0 0 0 2px rgba(255, 235, 202, 0.5);
+  transform: rotate(-3deg);
+}
+h1,
+h2,
+legend {
+  font-family: "Noto Serif TC", serif;
+}
+h1 {
+  margin: 0.15rem 0 0.5rem;
+  font-size: clamp(1.45rem, 7.6vw, 2rem);
+  letter-spacing: 0.045em;
+  line-height: 1.3;
+  white-space: nowrap;
+  text-wrap: nowrap;
+}
+.hero-copy {
+  margin: 0;
+  color: #665441;
+  font-family: "Noto Serif TC", serif;
+  font-size: 0.98rem;
+  letter-spacing: 0.1em;
+}
+/* 太極圖以半黑半白漸層為底，偽元素畫曲線圓面，span／i 畫兩個小圓點。 */
+.yin-yang {
+  position: relative;
+  width: 3.1rem;
+  height: 3.1rem;
+  margin: 1rem auto 0;
+  border-radius: 50%;
+  background: linear-gradient(90deg, #2e302a 50%, #ede5d6 50%);
+  border: 1px solid rgba(68, 54, 37, 0.45);
+  transform: rotate(20deg);
+}
+.yin-yang::before,
+.yin-yang::after {
+  content: "";
+  position: absolute;
+  left: 25%;
+  width: 50%;
+  height: 50%;
+  border-radius: 50%;
+}
+.yin-yang::before {
+  top: 0;
+  background: #ede5d6;
+}
+.yin-yang::after {
+  bottom: 0;
+  background: #2e302a;
+}
+.yin-yang span,
+.yin-yang i {
+  position: absolute;
+  z-index: 2;
+  top: 20%;
+  width: 0.32rem;
+  height: 0.32rem;
+  border-radius: 50%;
+}
+.yin-yang span {
+  left: 42%;
+  background: #2e302a;
+}
+.yin-yang i {
+  right: 42%;
+  top: 70%;
+  background: #ede5d6;
+}
+/* 預約表單外框使用半透明底色、陰影與背景模糊營造紙張層次。 */
+.booking-card {
+  max-width: 44rem;
+  margin: auto;
+  padding: 1.3rem;
+  border: 1px solid rgba(104, 79, 46, 0.35);
+  background: rgba(255, 252, 245, 0.78);
+  box-shadow:
+    0 1.1rem 3.6rem rgba(65, 45, 25, 0.13),
+    inset 0 0 0 5px rgba(241, 232, 216, 0.66);
+  backdrop-filter: blur(5px);
+}
+.card-heading {
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+.step-mark {
+  margin: 0;
+  color: #956f31;
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.17em;
+}
+.card-heading h2 {
+  margin: 0.3rem 0 0.2rem;
+  font-size: clamp(1.12rem, 5.1vw, 1.35rem);
+  white-space: nowrap;
+  text-wrap: nowrap;
+}
+.card-heading p:last-child {
+  margin: 0;
+  color: #766955;
+  font-size: 0.82rem;
+}
+/* 移除原生 fieldset 外框，保留 legend 的分組標題。 */
+fieldset {
+  min-width: 0;
+  margin: 0 0 1.6rem;
+  padding: 0;
+  border: 0;
+}
+legend {
+  width: 100%;
+  margin-bottom: 0.8rem;
+  font-size: 1.08rem;
+  font-weight: 700;
+}
+legend span,
+.consent b {
+  color: var(--error);
+}
+.service-options {
+  display: grid;
+  gap: 0.7rem;
+}
+/* 服務卡片以 Grid 排列圖示、名稱與價格，hover 提供滑鼠回饋。 */
+.service-option {
+  display: grid;
+  grid-template-columns: 2.4rem minmax(0, 1fr) max-content;
+  column-gap: 0.65rem;
+  align-items: center;
+  min-height: 5.25rem;
+  padding: 0.7rem 0.75rem;
+  border: 1px solid #cbbda8;
+  cursor: pointer;
+  transition:
+    transform 0.16s,
+    border-color 0.16s,
+    background 0.16s;
+}
+.service-option:hover {
+  transform: translateY(-1px);
+  border-color: #8a6b3b;
+}
+/* 視覺上縮藏原生 radio，仍保留鍵盤焦點與表單語意。 */
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  clip-path: inset(50%);
+  overflow: hidden;
+  white-space: nowrap;
+}
+/* 相鄰兄弟選擇器 + 把 radio 勾選狀態反映到它後面的 label 卡片。 */
+.visually-hidden:checked + .service-option {
+  border-color: #8d692c;
+  background: linear-gradient(90deg, rgba(190, 151, 79, 0.16), rgba(255, 253, 247, 0.2));
+  box-shadow: inset 3px 0 #9d7433;
+}
+/* 鍵盤移到隱藏 radio 時，在可見卡片外畫焦點框。 */
+.visually-hidden:focus-visible + .service-option {
+  outline: 3px solid #3d6255;
+  outline-offset: 2px;
+}
+/* 水／金圓形標記及服務資訊的位置；桌面斷點會覆寫部分 Grid 設定。 */
+.element-mark {
+  display: grid;
+  grid-row: span 2;
+  place-items: center;
+  width: 2.4rem;
+  height: 2.4rem;
+  border-radius: 50%;
+  color: #fff;
+  font-family: "Noto Serif TC", serif;
+  font-weight: 700;
+}
+.element-water {
+  background: #4f7280;
+}
+.element-gold {
+  background: #a87a34;
+}
+.service-info {
+  display: contents;
+}
+.service-info strong {
+  grid-column: 2;
+  font-family: "Noto Serif TC", serif;
+  font-size: 1.08rem;
+  line-height: 1.25;
+  white-space: nowrap;
+  text-wrap: nowrap;
+}
+.service-info small {
+  grid-column: 1 / -1;
+  color: #746854;
+  font-size: 0.71rem;
+  line-height: 1.35;
+  white-space: nowrap;
+  text-wrap: nowrap;
+}
+.service-price {
+  grid-column: 3;
+  color: #68491d;
+  font-family: "Noto Serif TC", serif;
+  font-size: 0.88rem;
+  font-weight: 700;
+  white-space: nowrap;
+  text-wrap: nowrap;
+}
+/* 預設手機採單欄表單；較寬螢幕於下方 media query 改為雙欄。 */
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0;
+}
+.form-group {
+  margin-bottom: 1rem;
+}
+.form-group label {
+  display: block;
+  margin-bottom: 0.35rem;
+  font-weight: 700;
+}
+.optional {
+  color: #80745e;
+  font-size: 0.8rem;
+  font-weight: 400;
+}
+/* 共用輸入元件的大小、字型與邊框，提供至少 48px 的操作高度。 */
+input,
+select,
+textarea {
+  width: 100%;
+  min-height: 48px;
+  padding: 0.7rem 0.75rem;
+  border: 1px solid #bdb09d;
+  border-radius: 0;
+  color: var(--ink);
+  font: inherit;
+  background: rgba(255, 253, 248, 0.94);
+}
+textarea {
+  min-height: 7rem;
+  resize: vertical;
+}
+/* focus-visible 提示鍵盤位置；:has 讓勾選框取得焦點時，整個同意區也顯示框線。 */
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+.consent:has(input:focus-visible) {
+  outline: 3px solid #617a6b;
+  outline-offset: 2px;
+}
+/* 依瀏覽器的使用者互動後驗證狀態標紅；錯誤文字另由 app.js 更新。 */
+input:user-invalid,
+select:user-invalid {
+  border-color: var(--error);
+}
+.hint,
+.field-error {
+  margin: 0.35rem 0 0;
+  font-size: 0.78rem;
+}
+.hint {
+  color: #756a58;
+  white-space: nowrap;
+  text-wrap: nowrap;
+}
+.field-error {
+  min-height: 1.15em;
+  color: var(--error);
+}
+/* 同意區以橫向排列勾選框和文字；覆寫通用 input 寬度以保留小勾選框。 */
+.consent {
+  display: flex;
+  gap: 0.55rem;
+  align-items: flex-start;
+  margin: 0.2rem 0 0.3rem;
+  color: #5f5343;
+  font-size: 0.82rem;
+}
+.consent input {
+  flex: 0 0 auto;
+  width: 1.15rem;
+  min-height: 1.15rem;
+  margin: 0.18rem 0 0;
+  accent-color: #56705e;
+}
+.consent a,
+.footer-links a {
+  color: #624720;
+  text-underline-offset: 3px;
+}
+/* 送出按鈕的外觀與互動回饋；disabled 由 app.js 在送出時設定。 */
+.submit-button {
+  width: 100%;
+  min-height: 52px;
+  margin-top: 0.7rem;
+  border: 0;
+  color: #fffaf0;
+  font:
+    700 1rem "Noto Serif TC",
+    serif;
+  letter-spacing: 0.1em;
+  cursor: pointer;
+  background: linear-gradient(100deg, #3e5145, #736038 52%, #8a542a);
+  box-shadow: 0 0.45rem 0.9rem rgba(75, 54, 28, 0.2);
+  transition:
+    filter 0.2s,
+    transform 0.2s;
+}
+.submit-button:hover {
+  filter: brightness(1.08);
+  transform: translateY(-1px);
+}
+.submit-button:focus-visible {
+  outline: 3px solid #203c2d;
+  outline-offset: 3px;
+}
+.submit-button:disabled {
+  cursor: wait;
+  opacity: 0.7;
+}
+/* 預留送出結果的高度，避免訊息出現時造成明顯版面跳動。 */
+.form-status {
+  min-height: 1.3rem;
+  margin: 0.9rem 0 0;
+  text-align: center;
+  color: #365c4b;
+  font-weight: 700;
+}
+/* 頁尾品牌文字與政策連結。 */
+footer {
+  margin-top: 2rem;
+  text-align: center;
+  color: #725f47;
+  font-family: "Noto Serif TC", serif;
+  font-size: 0.82rem;
+  letter-spacing: 0.08em;
+}
+.footer-links {
+  display: flex;
+  justify-content: center;
+  gap: 0.55rem;
+  margin: 0.3rem 0 0;
+  font-family: "Noto Sans TC", sans-serif;
+  font-size: 0.75rem;
+  letter-spacing: 0;
+}
+/* 640px 以上調整標題、間距、雙欄表單及服務卡片配置。 */
+@media (min-width: 640px) {
+  .page-shell {
+    padding: 3.5rem 1.25rem 2.5rem;
+  }
+  .hero {
+    margin-bottom: 2.2rem;
+  }
+  h1 {
+    font-size: clamp(2rem, 6vw, 3.2rem);
+    letter-spacing: 0.08em;
+  }
+  .booking-card {
+    padding: clamp(1.4rem, 4vw, 2.5rem);
+  }
+  .card-heading h2 {
+    font-size: clamp(1.35rem, 4vw, 1.75rem);
+  }
+  .form-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem;
+  }
+  .service-option {
+    padding: 0.7rem 0.85rem;
+  }
+  .service-info small {
+    grid-column: 2;
+  }
+  .element-mark {
+    grid-row: auto;
+  }
+  .service-info {
+    display: grid;
+    gap: 0.05rem;
+  }
+  .service-info strong,
+  .service-info small {
+    grid-column: auto;
+  }
+  .service-info small {
+    white-space: normal;
+    text-wrap: wrap;
+  }
+  .service-price {
+    grid-column: auto;
+    font-size: 1rem;
+  }
+}
+/* 尊重系統的減少動態效果偏好，把轉場縮短至幾乎立即完成。 */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+  }
+}

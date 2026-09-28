@@ -101,42 +101,49 @@ Worker 使用 Cloudflare 上的以下設定；日常部署沿用既有值：
 
 資料 API 使用 `Authorization: Bearer <LINE access token>`。Worker 向 LINE 驗證 token、比對 Channel ID，再取得 profile；管理 API 額外比對 `ADMIN_MINI_APP_USER_IDS`。CORS 只控制瀏覽器跨來源讀取，不能取代上述身分驗證。新預約會推播給 `ADMIN_LINE_USER_IDS` 中的所有收件人。
 
-### 預約、管理與通知流程
+### 使用者預約流程
 
 ```mermaid
 flowchart TD
-    U[填表使用者<br/>在 LINE 開啟 MINI App] --> F[預約表單]
-    F -->|LIFF access token| W[Cloudflare Worker API]
-
-    W --> V{LINE 驗證}
-    V -->|驗證 token 與<br/>MINI App Channel ID| P[取得 MINI App profile]
+    U[使用者在 LINE 開啟<br/>MINI App] --> F[填寫並送出預約表單]
+    F -->|LIFF access token 與表單資料| W[Cloudflare Worker]
+    W --> V{向 LINE 驗證<br/>token 與 Channel ID}
     V -->|失敗| E[顯示身分驗證失敗]
-
-    P --> B[寫入 Cloudflare D1<br/>bookings 預約資料表]
-    B --> N[讀取 ADMIN_LINE_USER_IDS<br/>通知收件人清單]
-    N --> M[LINE Messaging API]
-    M --> A1[管理者 A 的 LINE]
-    M --> A2[管理者 B 的 LINE]
-    M --> A3[其他管理者的 LINE]
-
-    A1 --> AD[從 MINI App 開啟<br/>admin.html 管理後台]
-    A2 --> AD
-    A3 --> AD
-
-    AD -->|LIFF access token| W
-    W --> C{userId 在<br/>ADMIN_MINI_APP_USER_IDS？}
-    C -->|是| L[讀取 D1 預約清單<br/>確認／補資料／婉拒]
-    C -->|否| X[沒有管理權限]
-
-    L -->|更新預約狀態與回覆| B
-    L --> R[LINE Messaging API]
-    R --> U
-
-    D[LINE Developers 的<br/>AdminMemberTester 角色]
-    D -. 只能管理 Developers 頻道<br/>不會自動提供通知名單 .-> AD
+    V -->|成功| P[取得使用者 MINI App userId]
+    P --> D1[寫入 D1 bookings]
+    D1 --> N[讀取 ADMIN_LINE_USER_IDS]
+    N --> API[LINE Messaging API]
+    API --> A[通知所有管理者<br/>有新的預約]
 ```
 
-兩份管理者名單的用途不同：`ADMIN_MINI_APP_USER_IDS` 控制誰能使用管理後台；`ADMIN_LINE_USER_IDS` 決定誰會收到新預約通知。LINE Developers 的角色名單不會自動成為 Messaging API 的推播收件人。
+### 管理者處理流程
+
+```mermaid
+flowchart TD
+    A[管理者在 LINE 開啟<br/>admin.html] --> T[取得 LIFF access token]
+    T --> W[Cloudflare Worker]
+    W --> V{向 LINE 驗證<br/>token 與 Channel ID}
+    V -->|失敗| E[顯示身分驗證失敗]
+    V -->|成功| C{userId 位於<br/>ADMIN_MINI_APP_USER_IDS？}
+    C -->|否| X[顯示沒有管理權限]
+    C -->|是| L[從 D1 讀取預約清單]
+    L --> S[確認／請補資料／婉拒]
+    S --> D1[更新 D1 預約狀態與回覆]
+    D1 --> API[LINE Messaging API]
+    API --> U[填表使用者收到結果]
+```
+
+### 管理者角色與通知名單
+
+```mermaid
+flowchart LR
+    R[LINE Developers<br/>AdminMemberTester] -. 可管理頻道與測試 Mini App .-> C[LINE Developers Console]
+    R -. 不會提供 userId 或通知收件人 .-> N[ADMIN_LINE_USER_IDS]
+    M[管理者的 MINI App userId] --> P[ADMIN_MINI_APP_USER_IDS<br/>可進管理後台]
+    O[管理者的 Messaging API userId] --> N[ADMIN_LINE_USER_IDS<br/>接收新預約通知]
+```
+
+`ADMIN_MINI_APP_USER_IDS` 控制誰能使用管理後台；`ADMIN_LINE_USER_IDS` 決定誰會收到新預約通知。LINE Developers 的角色名單不會自動成為 Messaging API 的推播收件人。
 
 推播透過 `ctx.waitUntil()` 背景執行，失敗會記錄到 log；API 寫入成功不代表通知已送達。
 
@@ -154,7 +161,7 @@ pnpm run format:check
 可檢查目前設定的 Worker 健康端點：
 
 ```bash
-curl https://syuanluo-booking-api.syuanluo-booking-api.workers.dev/health
+curl https://syuanluo-booking-api.syuanluo.workers.dev/health
 ```
 
 預期回應為 `{"ok":true}`；此端點不查詢 D1，也不呼叫 LINE，因此不能用來確認資料庫、驗證或推播是否正常。
@@ -164,3 +171,16 @@ curl https://syuanluo-booking-api.syuanluo-booking-api.workers.dev/health
 ```bash
 pnpm exec wrangler tail
 ```
+
+## 程式閱讀順序與註解
+
+各程式檔已補上繁體中文註解，說明檔案用途、函式、條件判斷與資料流。建議先讀 `index.html` 的表單結構，再讀 `app.js` 的日期規則及送出事件；接著閱讀 `worker/src/index.js` 的身分驗證與 API 路由，最後讀 `admin.js` 的清單與審核流程。
+
+CSS 註解說明各區塊外觀、選取狀態、鍵盤焦點及手機／桌面配置；`worker/schema.sql`、`worker/wrangler.toml` 與 Pages workflow 則說明資料保存和部署流程。
+
+JSON 格式不支援註解，以下設定保留原格式，改在此說明：
+
+- `worker/package.json`：`private` 避免誤發布套件；`type: module` 讓 JavaScript 使用 ES module。`dev` 啟動本機 Worker、`deploy` 部署、`db:create` 建立 D1、`db:migrate:remote` 對遠端 D1 執行 schema；`lint` 檢查程式、`format` 整理縮排、`format:check` 只檢查格式。`devDependencies` 列出開發工具。
+- `worker/.oxfmtrc.json`：目前為空物件，表示採用 oxfmt 預設格式設定。
+
+依賴鎖定檔由套件管理工具維護，不手動加註解。

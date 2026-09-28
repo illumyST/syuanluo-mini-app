@@ -1,1 +1,44 @@
-<!doctype html><html lang="zh-Hant"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="robots" content="noindex,nofollow"><title>預約管理｜玹㼈易境</title><link rel="stylesheet" href="./admin.css"><script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script><script src="./config.js" defer></script><script src="./admin.js" defer></script></head><body><main><header><p>玹㼈易境</p><h1>預約管理</h1><p id="auth-status" role="status">正在確認 LINE 管理權限…</p></header><section class="filters"><label>狀態<select id="status-filter"><option value="pending">待確認</option><option value="needs_information">需補資料</option><option value="confirmed">已確認</option><option value="rejected">無法安排</option><option value="all">全部</option></select></label><label>日期（選填）<input id="date-filter" type="date"></label><button id="refresh-button" type="button">重新整理</button></section><section><h2>預約申請 <span id="booking-count"></span></h2><p id="list-status" role="status"></p><div id="booking-list"></div></section></main></body></html>
+<!doctype html>
+<!-- 管理頁：admin.js 取得 LINE 身分並操作 Worker；實際管理權限由後端名單驗證。 -->
+<html lang="zh-Hant">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!-- 要求搜尋引擎不要索引或追蹤此頁；這項設定不是存取權限控制。 -->
+    <meta name="robots" content="noindex,nofollow" />
+    <title>預約管理｜玹㼈易境</title>
+    <link rel="stylesheet" href="./admin.css" />
+    <!-- LINE SDK 先載入，再依序執行共用網址設定與後台腳本。 -->
+    <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
+    <script src="./config.js" defer></script>
+    <script src="./admin.js" defer></script>
+  </head>
+  <body>
+    <main>
+      <header>
+        <p>玹㼈易境</p>
+        <h1>預約管理</h1>
+        <p id="auth-status" role="status">正在確認 LINE 管理權限…</p>
+      </header>
+      <!-- 狀態或日期變更時，admin.js 重新查詢；all 代表全部狀態，空日期代表不限制日期。 -->
+      <section class="filters">
+        <label
+          >狀態<select id="status-filter">
+            <option value="pending">待確認</option>
+            <option value="needs_information">需補資料</option>
+            <option value="confirmed">已確認</option>
+            <option value="rejected">無法安排</option>
+            <option value="all">全部</option>
+          </select></label
+        ><label>日期（選填）<input id="date-filter" type="date" /></label
+        ><button id="refresh-button" type="button">重新整理</button>
+      </section>
+      <section>
+        <h2>預約申請 <span id="booking-count"></span></h2>
+        <p id="list-status" role="status"></p>
+        <!-- 預約卡片由 admin.js 動態建立；每張卡片含資料、備註與三個審核按鈕。 -->
+        <div id="booking-list"></div>
+      </section>
+    </main>
+  </body>
+</html>

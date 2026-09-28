@@ -1,32 +1,40 @@
+# GitHub Pages 靜態網站部署流程；Worker 由自己的部署指令另外發布。
 name: Deploy static site to GitHub Pages
 
+# main 分支收到推送時啟動，也可在 Actions 頁面手動觸發。
 on:
   push:
     branches: [main]
   workflow_dispatch:
 
+# 允許讀取程式碼、寫入 Pages，以及取得部署使用的身分 token。
 permissions:
   contents: read
   pages: write
   id-token: write
 
+# 同一部署群組只保留最新流程，取消仍在進行的舊部署。
 concurrency:
   group: pages
   cancel-in-progress: true
 
 jobs:
   deploy:
+# 把部署連結記錄到 github-pages 環境，網址取自 deployment 步驟輸出。
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     steps:
+# 先取出版本庫，再初始化 Pages 所需設定。
       - uses: actions/checkout@v4
       - uses: actions/configure-pages@v5
+# 只複製公開網站檔案；新增靜態資源時需同步更新這份清單。
       - name: Prepare public site files
         run: |
           mkdir _site
           cp index.html app.js styles.css legal.css privacy.html terms.html config.js admin.html admin.js admin.css _site/
+# 將 _site 打包上傳為 Pages artifact，再由下一步發布。
       - uses: actions/upload-pages-artifact@v3
         with:
           path: _site
