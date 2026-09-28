@@ -18,6 +18,11 @@ const result = (body, status = 200) =>
     headers: { "content-type": "application/json; charset=UTF-8" },
   });
 const trim = (value, size) => (typeof value === "string" ? value.trim().slice(0, size) : "");
+const ids = (value) =>
+  String(value || "")
+    .split(",")
+    .map((id) => id.trim())
+    .filter(Boolean);
 function cors(request, env) {
   const origin = request.headers.get("Origin") || "";
   return (env.ALLOWED_ORIGINS || "")
@@ -88,7 +93,8 @@ async function user(request, env, admin = false) {
     return null;
   }
   const data = await profile.json();
-  if (admin && data.userId !== env.ADMIN_LINE_USER_ID) {
+  const adminIds = ids(env.ADMIN_MINI_APP_USER_IDS || env.ADMIN_MINI_APP_USER_ID);
+  if (admin && !adminIds.includes(data.userId)) {
     console.log("line-auth:not-admin");
     return null;
   }
@@ -105,6 +111,10 @@ async function push(env, to, text) {
     body: JSON.stringify({ to, messages: [{ type: "text", text }] }),
   });
   if (!response.ok) throw new Error(`LINE Push ${response.status}`);
+}
+async function pushAdmins(env, text) {
+  const recipients = ids(env.ADMIN_LINE_USER_IDS || env.ADMIN_LINE_USER_ID);
+  await Promise.allSettled(recipients.map((userId) => push(env, userId, text)));
 }
 function customerText(booking) {
   return [
@@ -183,9 +193,8 @@ export default {
               )
               .run();
             ctx.waitUntil(
-              push(
+              pushAdmins(
                 env,
-                env.ADMIN_LINE_USER_ID,
                 [
                   "【新的預約申請】",
                   `${booking.service_name}｜${booking.booking_date}｜${slots[booking.time_slot]}`,
