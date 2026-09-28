@@ -1,1 +1,19 @@
-{"name":"syuanluo-booking-worker","private":true,"type":"module","scripts":{"dev":"wrangler dev","deploy":"wrangler deploy","db:create":"wrangler d1 create syuanluo-booking","db:migrate:remote":"wrangler d1 execute syuanluo-booking --remote --file=./schema.sql"},"devDependencies":{"wrangler":"^4.0.0"}}
+{
+  "name": "syuanluo-booking-worker",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy",
+    "db:create": "wrangler d1 create syuanluo-booking",
+    "db:migrate:remote": "wrangler d1 execute syuanluo-booking --remote --file=./schema.sql",
+    "lint": "oxlint src",
+    "format": "oxfmt --write src",
+    "format:check": "oxfmt --check src"
+  },
+  "devDependencies": {
+    "oxfmt": "^0.70.0",
+    "oxlint": "^1.85.0",
+    "wrangler": "^4.0.0"
+  }
+}
